@@ -32,7 +32,7 @@
             "metadata": {
                 "description": "The location of resources, such as templates and DSC modules, that the template depends on"
             },
-            "defaultValue": "https://raw.githubusercontent.com/SkillableMG/azure-quickstart-templates/az140-latest/application-workloads/active-directory/active-directory-new-domain/"
+            "defaultValue": "[deployment().properties.templateLink.uri]"
         },
         "_artifactsLocationSasToken": {
             "type": "securestring",
@@ -105,6 +105,10 @@
             }
         }
     },
+    "variables": {
+	"artifactsLocation": "https://raw.githubusercontent.com/SkillableMG/azure-quickstart-templates/az140-latest/application-workloads/active-directory/active-directory-new-domain/",
+	"artifactsLocationSasToken": ""
+    },
     "resources": [
         {
             "type": "Microsoft.Compute/availabilitySets",
@@ -126,7 +130,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/vnet.json', parameters('_artifactsLocationSasToken')))]",
+                    "uri": "[uri(variables('artifactsLocation'), concat('nestedtemplates/vnet.json', variables('artifactsLocationSasToken')))]",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
@@ -243,7 +247,7 @@
                         "typeHandlerVersion": "2.19",
                         "autoUpgradeMinorVersion": false,
                         "settings": {
-                            "ModulesUrl": "[uri(parameters('_artifactsLocation'), concat('DSC/CreateADPDC.zip', parameters('_artifactsLocationSasToken')))]",
+                            "ModulesUrl": "[uri(variables('artifactsLocation'), concat('DSC/CreateADPDC.zip', variables('artifactsLocationSasToken')))]",
                             "ConfigurationFunction": "CreateADPDC.ps1\\CreateADPDC",
                             "Properties": {
                                 "DomainName": "[parameters('domainName')]",
@@ -272,7 +276,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/vnet-with-dns-server.json', parameters('_artifactsLocationSasToken')))]",
+                    "uri": "[uri(variables('artifactsLocation'), concat('nestedtemplates/vnet-with-dns-server.json', variables('artifactsLocationSasToken')))]",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
